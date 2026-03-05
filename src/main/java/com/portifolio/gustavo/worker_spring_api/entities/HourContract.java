@@ -13,11 +13,14 @@ public class HourContract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "contract_date")
     private LocalDate date;
 
     @Column(name = "value_per_hour")
     private Double valuePerHour;
 
+    @Column(name = "hours")
     private Integer hour;
 
     // ASSOCIATIONS
@@ -81,6 +84,7 @@ public class HourContract {
     }
 
     // EQUALS AND HASHCODE
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

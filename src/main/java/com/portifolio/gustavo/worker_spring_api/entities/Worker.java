@@ -83,10 +83,12 @@ public class Worker {
 
     public void addContract(HourContract contract) {
         hourContractList.add(contract);
+        contract.setWorker(this);
     }
 
     public void removeContract(HourContract contract) {
         hourContractList.remove(contract);
+        contract.setWorker(null);
     }
 
     // BUSINESS RULE
