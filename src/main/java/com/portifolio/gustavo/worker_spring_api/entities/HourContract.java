@@ -1,15 +1,31 @@
 package com.portifolio.gustavo.worker_spring_api.entities;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_hour_contract")
 public class HourContract {
 
+    // BASIC ATTRIBUTES
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
+
+    @Column(name = "value_per_hour")
     private Double valuePerHour;
+
     private Integer hour;
 
+    // ASSOCIATIONS
+    @ManyToOne
+    @JoinColumn(name = "worker_id")
+    private Worker worker;
+
+    // CONSTRUCTORS
     public HourContract() {
     }
 
@@ -19,6 +35,7 @@ public class HourContract {
         this.hour = hour;
     }
 
+    // GETTERS & SETTERS
     public Long getId() {
         return id;
     }
@@ -51,10 +68,19 @@ public class HourContract {
         this.hour = hour;
     }
 
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
+    }
+
     public Double totalValue() {
         return  valuePerHour * hour;
     }
 
+    // EQUALS AND HASHCODE
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

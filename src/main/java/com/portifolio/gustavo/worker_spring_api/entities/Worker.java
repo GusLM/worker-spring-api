@@ -1,21 +1,35 @@
 package com.portifolio.gustavo.worker_spring_api.entities;
 
 import com.portifolio.gustavo.worker_spring_api.entities.enums.WorkerLevel;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "tb_workers")
 public class Worker {
 
+    // BASIC ATTRIBUTES
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private WorkerLevel level;
+
+    @Column(name = "base_salary")
     private Double baseSalary;
 
+    // ASSOCIATIONS
+    @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
+
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<HourContract> hourContractList = new ArrayList<>();
 
+    // CONSTRUCTORS
     public Worker() {
     }
 
@@ -26,6 +40,7 @@ public class Worker {
         this.department = department;
     }
 
+    // GETTERS & SETTERS
     public Long getId() {
         return id;
     }
@@ -74,6 +89,7 @@ public class Worker {
         hourContractList.remove(contract);
     }
 
+    // BUSINESS RULE
     public Double income(Integer year, Integer month) {
         double sum = baseSalary;
         for (HourContract contract : hourContractList) {
@@ -84,6 +100,7 @@ public class Worker {
         return sum;
     }
 
+    // EQUALS AND HASHCODE
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
