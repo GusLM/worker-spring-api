@@ -10,6 +10,7 @@ import com.portifolio.gustavo.worker_spring_api.repositories.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ public class SeedingConfig implements CommandLineRunner {
     private HourContractRepository hourContractRepository;
 
 
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
 
@@ -50,6 +52,8 @@ public class SeedingConfig implements CommandLineRunner {
                 new Worker("Épsilon", WorkerLevel.MID_LEVEL, 4500.0, departmentList.get(3))
         );
 
+        workerList = workerRepository.saveAll(workerList);
+
         HourContract contract1 = new HourContract(LocalDate.of(2025, 8, 20), 120.0, 20);
         HourContract contract2 = new HourContract(LocalDate.of(2025, 8, 13), 80.0, 18);
         HourContract contract3 = new HourContract(LocalDate.of(2025, 8, 25), 80.0, 30);
@@ -61,8 +65,5 @@ public class SeedingConfig implements CommandLineRunner {
         workerList.get(2).addContract(contract3);
         workerList.get(3).addContract(contract4);
         workerList.get(4).addContract(contract5);
-
-        workerList = workerRepository.saveAll(workerList);
-
     }
 }
